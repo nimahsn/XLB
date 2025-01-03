@@ -23,7 +23,7 @@ class ForcedCollision(Collision):
     ):
         assert collision_operator is not None
         self.collision_operator = collision_operator
-        super().__init__(self.collision_operator.omega)
+        super().__init__()
 
         assert forcing_scheme == "exact_difference", NotImplementedError(f"Force model {forcing_scheme} not implemented!")
         assert force_vector.shape[0] == self.velocity_set.d, "Check the dimensions of the input force!"
