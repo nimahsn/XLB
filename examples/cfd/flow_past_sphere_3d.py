@@ -31,6 +31,7 @@ class FlowOverSphere:
         self.backend = backend
         self.precision_policy = precision_policy
         self.omega = omega
+
         self.boundary_conditions = []
         self.u_max = 0.04
 

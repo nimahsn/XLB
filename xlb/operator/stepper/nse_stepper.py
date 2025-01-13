@@ -127,7 +127,7 @@ class IncompressibleNavierStokesStepper(Stepper):
         return f_0, f_1
 
     @Operator.register_backend(ComputeBackend.JAX)
-    @partial(jit, static_argnums=(0))
+    @partial(jit, static_argnums=(0,))
     def jax_implementation(self, f_0, f_1, bc_mask, missing_mask, omega, timestep):
         """
         Perform a single step of the lattice boltzmann method

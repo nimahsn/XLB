@@ -72,7 +72,7 @@ class KBC(Collision):
             raise NotImplementedError("Velocity set not supported: {}".format(type(self.velocity_set)))
 
         # Compute required constants based on the input omega (omega is the inverse relaxation time)
-        beta = omega * 0.5
+        beta = self.compute_dtype(0.5) * self.compute_dtype(omega)
         inv_beta = 1.0 / beta
 
         # Perform collision
@@ -279,8 +279,8 @@ class KBC(Collision):
                 delta_s = shear * rho / self.compute_dtype(4.0)
 
             # Compute required constants based on the input omega (omega is the inverse relaxation time)
-            _beta = omega * 0.5
-            _inv_beta = 1.0 / _beta
+            _beta = self.compute_dtype(0.5) * self.compute_dtype(omega)
+            _inv_beta = self.compute_dtype(1.0) / _beta
 
             # Perform collision
             delta_h = fneq - delta_s

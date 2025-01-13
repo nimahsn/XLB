@@ -11,7 +11,6 @@ class Collision(Operator):
     Base class for collision operators.
 
     This class defines the collision step for the Lattice Boltzmann Method.
-
     """
 
     def __init__(

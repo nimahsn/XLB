@@ -30,7 +30,7 @@ class BGK(Collision):
         @wp.func
         def functional(f: Any, feq: Any, rho: Any, u: Any, omega: Any):
             fneq = f - feq
-            fout = f - omega * fneq
+            fout = f - self.compute_dtype(omega) * fneq
             return fout
 
         # Construct the warp kernel
