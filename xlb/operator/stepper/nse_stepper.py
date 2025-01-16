@@ -136,18 +136,8 @@ class IncompressibleNavierStokesStepper(Stepper):
         f_0 = self.precision_policy.cast_to_compute_jax(f_0)
         f_1 = self.precision_policy.cast_to_compute_jax(f_1)
 
-        # Apply streaming
-        f_post_stream = self.stream(f_0)
-
-        # Apply boundary conditions
-        for bc in self.boundary_conditions:
-            if bc.implementation_step == ImplementationStep.STREAMING:
-                f_post_stream = bc(
-                    f_0,
-                    f_post_stream,
-                    bc_mask,
-                    missing_mask,
-                )
+        # Assing f_post_stream
+        f_post_stream = f_0
 
         # Compute the macroscopic variables
         rho, u = self.macroscopic(f_post_stream)
@@ -169,8 +159,22 @@ class IncompressibleNavierStokesStepper(Stepper):
                     missing_mask,
                 )
 
+        # Apply streaming
+        f_post_stream = self.stream(f_post_collision)
+
+        # Apply boundary conditions
+        for bc in self.boundary_conditions:
+            if bc.implementation_step == ImplementationStep.STREAMING:
+                f_post_stream = bc(
+                    f_post_collision,
+                    f_post_stream,
+                    bc_mask,
+                    missing_mask,
+                )
+
         # Copy back to store precision
-        f_1 = self.precision_policy.cast_to_store_jax(f_post_collision)
+        f_0 = self.precision_policy.cast_to_store_jax(f_post_collision)
+        f_1 = self.precision_policy.cast_to_store_jax(f_post_stream)
 
         return f_0, f_1
 
